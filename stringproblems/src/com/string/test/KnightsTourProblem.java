@@ -7,7 +7,7 @@ public class KnightsTourProblem {
 	/*
 	 * A utility function to check if i,j are valid indexes for N*N chess board
 	 */
-	static boolean isSafe(int x, int y, int sol[][]) {
+	static boolean isSafeMove(int x, int y, int sol[][]) {
 		return (x >= 0 && x < MOVE && y >= 0 && y < MOVE && sol[x][y] == -1);
 	}
 
@@ -52,20 +52,20 @@ public class KnightsTourProblem {
 	 */
 
 	static boolean solveKnightTourUtil(int x, int y, int movei, int sol[][], int xMove[], int yMove[]) {
-		int k, next_x, next_y;
+		int k, x_next, y_next;
 		if (movei == MOVE * MOVE) {
 			return true;
 		}
 
 		for (k = 0; k < MOVE; k++) {
-			next_x = x + xMove[k];
-			next_y = y + yMove[k];
-			if (isSafe(next_x, next_y, sol)) {
-				sol[next_x][next_y] = movei;
-				if (solveKnightTourUtil(next_x, next_y, movei + 1, sol, xMove, yMove)) {
+			x_next = x + xMove[k];
+			y_next = y + yMove[k];
+			if (isSafeMove(x_next, y_next, sol)) {
+				sol[x_next][y_next] = movei;
+				if (solveKnightTourUtil(x_next, y_next, movei + 1, sol, xMove, yMove)) {
 					return true;
 				} else {
-					sol[next_x][next_y] = -1;
+					sol[x_next][y_next] = -1;
 				}
 			}
 		}
