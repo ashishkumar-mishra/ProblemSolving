@@ -1,2 +1,2 @@
 # ProblemSolving
-Repository for solving problems
+Repository for solving problmes using java.
