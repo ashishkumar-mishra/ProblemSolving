@@ -1,4 +1,4 @@
-package com.string.test;
+package com.algo.string;
 
 public class StringProblems {
 	/**
