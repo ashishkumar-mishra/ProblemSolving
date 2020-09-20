@@ -1,4 +1,4 @@
-package com.apple.dynamic;
+package com.algo.dynamic;
 
 public class PaintHouse {
 	public int minCost(int[][] costs) {
