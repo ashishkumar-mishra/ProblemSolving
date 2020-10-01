@@ -1,5 +1,9 @@
 package com.algo.string;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class StringProblems {
 	/**
 	 * method to print all the substring of given string
@@ -20,9 +24,8 @@ public class StringProblems {
 	public boolean isPalindrome(final String inputString) {
 		int startIndex = 0;
 		int endIndex = inputString.length() - 1;
-		char[] charArray = inputString.toCharArray();
 		while (startIndex <= endIndex) {
-			if (charArray[startIndex] != charArray[endIndex]) {
+			if (inputString.charAt(startIndex) != inputString.charAt(endIndex)) {
 				System.out.println("input string is not a palindrome string");
 				return false;
 			}
@@ -123,16 +126,38 @@ public class StringProblems {
 	/**
 	 * method to print the permutations of a given string
 	 */
-	public void permutate(String inputString, int startIndex, int endIndex) {
+	public void permutate(String str, int startIndex, int endIndex) {
+		// System.out.println("(" + str + "," + startIndex + "," + endIndex + ")");
 		if (startIndex == endIndex) {
-			System.out.println(inputString);
+			System.out.println(str);
 		} else {
 			for (int i = startIndex; i <= endIndex; i++) {
-				String str = swap(inputString, startIndex, i);
+				str = swap(str, startIndex, i);
 				permutate(str, startIndex + 1, endIndex);
-				System.out.println(inputString);
-				System.out.println(str);
+				// commenting below line will short the output in lexicographical order
+				str = swap(str, startIndex, i);
 			}
+		}
+	}
+
+	public void permutate1(String str, String result) {
+		// base case
+		if (str.length() == 0) {
+			System.out.print(result + " ");
+			return;
+		}
+
+		for (int i = 0; i < str.length(); i++) {
+
+			// ith character of str
+			char ch = str.charAt(i);
+
+			// Rest of the string after excluding
+			// the ith character
+			String ros = str.substring(0, i) + str.substring(i + 1);
+
+			// Recurvise call
+			permutate1(ros, result + ch);
 		}
 	}
 
@@ -158,4 +183,205 @@ public class StringProblems {
 		return subString;
 	}
 
+	/**
+	 * This method converts string to integer value, there are below cases - if
+	 * string is null or empty (string = ""): return 0 ignore the leading or
+	 * trailing whitespace (string = " 123 ") : return 123 case when there is + or -
+	 * sign in beginning (string = "-123") : return -123 return 0 in case there is
+	 * not leading numeric value (string = "abc" ) return 0; if value is more than
+	 * Integer.MAX_VALUE return Integer.MAX_VALUE. if value is less than
+	 * Integer.MIN_VALUE return Integer.MIN_VALUE.
+	 * 
+	 * @param string
+	 * @return
+	 */
+	public int stringToInteger(String string) {
+		boolean isNegative = false;
+		int result = 0;
+		int startIndex = 0;
+		if (string == null || string.isEmpty()) {
+			return result;
+		}
+		while (string.charAt(startIndex) == ' ') {
+			startIndex++;
+		}
+		if (string.charAt(startIndex) == '-' || string.charAt(startIndex) == '+') {
+			if (string.charAt(startIndex) == '-') {
+				isNegative = true;
+			}
+			startIndex++;
+		}
+		while (startIndex < string.length() && (string.charAt(startIndex) >= '0' || string.charAt(startIndex) <= '9')) {
+			if (result > Integer.MAX_VALUE / 10
+					|| ((result == Integer.MAX_VALUE / 10) && string.charAt(startIndex) - '0' > 7)) {
+				if (isNegative) {
+					return Integer.MIN_VALUE;
+				}
+				return Integer.MAX_VALUE;
+			}
+			result = result * 10 + (string.charAt(startIndex++) - '0');
+		}
+		if (isNegative) {
+			result = -result;
+		}
+		return result;
+	}
+
+	public int dynamicEditDistance(char[] str1, char[] str2) {
+		int temp[][] = new int[str1.length + 1][str2.length + 1];
+
+		for (int i = 0; i < temp[0].length; i++) {
+			temp[0][i] = i;
+		}
+
+		for (int i = 0; i < temp.length; i++) {
+			temp[i][0] = i;
+		}
+
+		for (int i = 1; i <= str1.length; i++) {
+			for (int j = 1; j <= str2.length; j++) {
+				if (str1[i - 1] == str2[j - 1]) {
+					temp[i][j] = temp[i - 1][j - 1];
+				} else {
+					temp[i][j] = 1 + min(temp[i - 1][j - 1], temp[i - 1][j], temp[i][j - 1]);
+				}
+			}
+		}
+		return temp[str1.length][str2.length];
+
+	}
+
+	private int min(int a, int b, int c) {
+		int l = Math.min(a, b);
+		return Math.min(l, c);
+	}
+
+	public String longestSubStringWithoutRepeatedChar(String inputString) {
+		if (inputString.isEmpty()) {
+			return "";
+		}
+		int i = 0;
+		int j = 0;
+		int maxLength = 0;
+		int maxStart = 0;
+		Set<Character> chars = new HashSet<>();
+		while (i < inputString.length() && j < inputString.length()) {
+			if (!chars.contains(inputString.charAt(j))) {
+				chars.add(inputString.charAt(j));
+				j++;
+				if (maxLength < (j - i)) {
+					maxLength = (j - i);
+					maxStart = i;
+				}
+			} else {
+				chars.remove(inputString.charAt(i));
+				i++;
+			}
+			System.out.println("i = " + i + " j= " + j + " maxLength= " + maxLength);
+			System.out.println("set=" + chars);
+		}
+
+		return inputString.substring(maxStart, maxLength + maxStart);
+	}
+
+	public void getAlltheSubSequences(final String inputString, String str, final List<String> result) {
+		if (inputString.length() == 0) {
+			result.add(str);
+			return;
+		}
+		getAlltheSubSequences(inputString.substring(1), str + inputString.charAt(0), result);
+		getAlltheSubSequences(inputString.substring(1), str, result);
+	}
+
+	public String addStrings(String num1, String num2) {
+		int carry = 0;
+		int i = num1.length() - 1;
+		int j = num2.length() - 1;
+		String result = "";
+		while (i >= 0 && j >= 0) {
+			int sum = num1.charAt(i) - '0' + num2.charAt(j) - '0' + carry;
+			if (sum > 9) {
+				result = sum % 10 + result;
+				carry = sum / 10;
+			} else {
+				result = sum + result;
+				carry = 0;
+			}
+			i--;
+			j--;
+		}
+		// if there is anything pending in first number
+		while (i >= 0) {
+			int sum = num1.charAt(i) - '0' + carry;
+			if (sum > 9) {
+				result = sum % 10 + result;
+				carry = sum / 10;
+			} else {
+				result = sum + result;
+				carry = 0;
+			}
+			i--;
+		}
+
+		while (j >= 0) {
+			int sum = num2.charAt(j) - '0' + carry;
+			if (sum > 9) {
+				result = sum % 10 + result;
+				carry = sum / 10;
+			} else {
+				result = sum + result;
+				carry = 0;
+			}
+			j--;
+		}
+		if (carry > 0) {
+			result = carry + result;
+		}
+
+		return result;
+	}
+
+	public String addBinary(String str1, String str2) {
+		if (str2.length() > str1.length()) {
+			return addBinary(str2, str1);
+		}
+
+		int i = str1.length() - 1;
+		int j = str2.length() - 1;
+		String result = "";
+		int carry = 0;
+
+		while (i >= 0 && j >= 0) {
+			int sum = str1.charAt(i) - '0' + str2.charAt(j) - '0' + carry;
+			result = sum % 2 + result;
+			carry = sum / 2;
+			i--;
+			j--;
+		}
+
+		while (i >= 0) {
+			int sum = str1.charAt(i) - '0' + carry;
+			result = sum % 2 + result;
+			carry = sum / 2;
+			i--;
+		}
+		if (carry > 0) {
+			result = carry + result;
+		}
+		return result;
+	}
+
+	public static void main(String args[]) {
+		StringProblems problems = new StringProblems();
+		problems.isPalindrome("abba");
+		// System.out.print("value = " + problems.stringToInteger("-2147483649"));
+
+		//String str1 = "azced";
+		//String str2 = "abcd";
+		//System.out.println(problems.dynamicEditDistance(str1.toCharArray(), str2.toCharArray()));
+		//problems.permutate("abcd", 0, 3);
+		System.out.println(problems.addStrings("9", "99"));
+		System.out.println(problems.addBinary("111", "111"));
+		
+	}
 }
