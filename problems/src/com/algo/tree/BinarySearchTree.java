@@ -164,6 +164,22 @@ public class BinarySearchTree {
 		return true;
 	}
 
+	int sum = 0;
+
+	public int rangeSumBST(TreeNode root, int leftRange, int rightRange) {
+		if (root != null) {
+			if (root.key >= leftRange && root.key <= rightRange) {
+				sum += root.key;
+			}
+			if (root.key > leftRange) {
+				rangeSumBST(root.left, leftRange, rightRange);
+			}
+			if (root.key < rightRange) {
+				rangeSumBST(root.right, leftRange, rightRange);
+			}
+		}
+		return sum;
+	}
 
 	public static void main(String[] args) {
 		BinarySearchTree binarySearchTree = new BinarySearchTree();
@@ -182,8 +198,8 @@ public class BinarySearchTree {
 		root.left.right = binarySearchTree.new TreeNode(4);
 		System.out.println(binarySearchTree.isValidBSTInorder(root));
 		System.out.println(binarySearchTree.isValidBSTInorderNoExtraSpace(root));
-		//System.out.println(binarySearchTree.levelOrder(root));
-		//System.out.println(binarySearchTree.levelOrderUsingQueue(root));
-		//System.out.println(binarySearchTree.zigzagLevelOrder(root));
+		// System.out.println(binarySearchTree.levelOrder(root));
+		// System.out.println(binarySearchTree.levelOrderUsingQueue(root));
+		// System.out.println(binarySearchTree.zigzagLevelOrder(root));
 	}
 }

@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
-import com.algo.tree.BinarySearchTree.TreeNode;
-
 public class BinaryTree {
 
 	// Zigzag level traversal of binary tree
@@ -136,5 +134,27 @@ public class BinaryTree {
 			return isSymmetricHelper(node1.left, node2.right) && isSymmetricHelper(node1.right, node2.left);
 		}
 		return false;
+	}
+
+	List<Integer> result = new ArrayList<>();
+
+	/**
+	 * Given a binary tree, imagine yourself standing on the right side of it,
+	 * return the values of the nodes you can see ordered from top to bottom.
+	 */
+	public List<Integer> rightSideView(TreeNode root) {
+		viewHelper(root, 0);
+		return result;
+	}
+
+	public void viewHelper(TreeNode root, int level) {
+		if (root == null) {
+			return;
+		}
+		if (level == result.size()) {
+			result.add(root.key);
+		}
+		viewHelper(root.right, level + 1);
+		viewHelper(root.left, level + 1);
 	}
 }
