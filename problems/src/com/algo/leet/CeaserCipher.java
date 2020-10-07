@@ -10,10 +10,10 @@ public class CeaserCipher {
 
 		for (int i = 0; i < text.length(); i++) {
 			if (Character.isUpperCase(text.charAt(i))) {
-				int modifiedChar = (text.charAt(i) + shift - 65) % 26 + 'A';
+				int modifiedChar = (text.charAt(i) + shift - 'A') % 26 + 'A';
 				result[i] = (char) modifiedChar;
 			} else {
-				int modifiedChar = (text.charAt(i) + shift - 97) % 26 + 'a';
+				int modifiedChar = (text.charAt(i) + shift - 'a') % 26 + 'a';
 				result[i] = (char) modifiedChar;
 			}
 		}
@@ -46,7 +46,7 @@ public class CeaserCipher {
 	}
 
 	private boolean isCeaserCipher(String str1, String str2) {
-		for (int i = 1; i < 26; i++) {
+		for (int i = 0; i < 26; i++) {
 			String s1 = getCeaser(str1, i);
 			if (s1.equals(str2)) {
 				return true;

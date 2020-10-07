@@ -157,4 +157,43 @@ public class BinaryTree {
 		viewHelper(root.right, level + 1);
 		viewHelper(root.left, level + 1);
 	}
+
+	int maxSum = Integer.MIN_VALUE;
+
+	public int maxPathSum(TreeNode root) {
+		maxPathSumUtil(root);
+		return maxSum;
+	}
+
+	private int maxPathSumUtil(TreeNode node) {
+		// case when root is empty
+		if (node == null) {
+			return 0;
+		}
+
+		int leftSum = maxPathSumUtil(node.left);
+		int rightSum = maxPathSumUtil(node.right);
+
+		int maxSumAtMostOnChild = Math.max(Math.max(leftSum, rightSum) + node.key, node.key);
+
+		// max sum when root is path root
+		int maxtop = Math.max(maxSumAtMostOnChild, leftSum + rightSum + node.key);
+
+		maxSum = Math.max(maxSum, maxtop);
+
+		return maxSumAtMostOnChild;
+	}
+
+	public static void main(String args[]) {
+		BinaryTree tree = new BinaryTree();
+		TreeNode root = new TreeNode(10);
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(10);
+		root.left.left = new TreeNode(20);
+		root.left.right = new TreeNode(1);
+		root.right.right = new TreeNode(-25);
+		root.right.right.left = new TreeNode(3);
+		root.right.right.right = new TreeNode(4);
+		System.out.println("maximum path sum is : " + tree.maxPathSum(root));
+	}
 }

@@ -36,7 +36,7 @@ public class ZigZagString {
 
 	public static void main(String[] args) {
 		ZigZagString zigZagString = new ZigZagString();
-		String str = "PAYPALISHIRING";
+		String str = "GEEKSFORGEEKS";
 		System.out.println(zigZagString.convertZigzag(str, 3));
 	}
 }
