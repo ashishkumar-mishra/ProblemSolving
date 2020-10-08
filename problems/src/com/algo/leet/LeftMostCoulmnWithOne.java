@@ -27,9 +27,9 @@ public class LeftMostCoulmnWithOne {
 				} else {
 					high = mid;
 				}
-				if (binaryMatrix.get(row, low) == 1) {
-					minIndex = Math.min(minIndex, low);
-				}
+			}
+			if (binaryMatrix.get(row, low) == 1) {
+				minIndex = Math.min(minIndex, low);
 			}
 		}
 		return minIndex == Integer.MAX_VALUE ? -1 : minIndex;
