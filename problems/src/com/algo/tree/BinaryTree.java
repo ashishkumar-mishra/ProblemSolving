@@ -1,8 +1,11 @@
 package com.algo.tree;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -182,6 +185,50 @@ public class BinaryTree {
 		maxSum = Math.max(maxSum, maxtop);
 
 		return maxSumAtMostOnChild;
+	}
+
+	public List<List<Integer>> verticalOrder(TreeNode root) {
+		List<List<Integer>> result = new ArrayList<>();
+		if (root == null) {
+			return result;
+		}
+		Map<Integer, List<Integer>> map = new HashMap<>();
+		Queue<Pair> queue = new LinkedList<>();
+		queue.add(new Pair(root, 0));
+		while (!queue.isEmpty()) {
+			Pair node = queue.poll();
+			map.computeIfAbsent(node.getPriority(), x -> new ArrayList<>()).add(node.getNode().key);
+			if (node.getNode().left != null) {
+				queue.add(new Pair(node.getNode().left, node.getPriority() - 1));
+			}
+			if (node.getNode().right != null) {
+				queue.add(new Pair(node.getNode().right, node.getPriority() + 1));
+			}
+		}
+		List<Integer> keys = new ArrayList<>(map.keySet());
+		Collections.sort(keys);
+		for (int key : keys) {
+			result.add(map.get(key));
+		}
+		return result;
+	}
+
+	class Pair {
+		private TreeNode node;
+		private int priority;
+
+		Pair(TreeNode node, int priority) {
+			this.node = node;
+			this.priority = priority;
+		}
+
+		public TreeNode getNode() {
+			return node;
+		}
+
+		public int getPriority() {
+			return priority;
+		}
 	}
 
 	public static void main(String args[]) {

@@ -66,7 +66,6 @@ public class SnakeGame {
 			}
 		}
 		deque.addFirst(x + "," + y);
-
 		if (x < 0 || y < 0 || x > height - 1 || y > width - 1) {
 			score = -1;
 		}
